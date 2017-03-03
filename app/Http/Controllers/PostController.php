@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Post;
-
+use App\Post; #bikinsendiri
+use Session; #bikinsendiri
 class PostController extends Controller
 {
     /**
@@ -14,7 +14,11 @@ class PostController extends Controller
      */
     public function index()
     {
-        //
+        //create a variable and store all the blog posts int it from the database
+        $postsIndex= Post::all();
+
+        //return a view and pass int the above  variable 
+        return view('posts.index')->withPostszzz($postsIndex);
     }
 
     /**
@@ -24,7 +28,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        //1 set view location go to rout
+        //1 set view location go to rout *1
         return view('posts.create');
     }
 
@@ -36,23 +40,25 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //validate the data
+        //validate the data *2
         $this->validate($request, array(
             'title' => 'required|max:255',
             'body'  => 'required'
         ));
 
-        //store in the database
+        //store in the database 83
         $post = new Post;
         $post->title = $request->title;
         $post->body = $request->body;
-        $post->save = save();
+        $post->save(); 
+        
+        #return $post;
+        #$request->session()->flash('success','The Blog Post was Successfully Save!');
+        Session::flash('Ssuccess','The Blog Post was Successfully Save!');
+        //redirect to another page *4
+        return redirect()->route('posts.show', $post->id);
+        //return redirect('/posts/' . $post->id);
 
-        Session::flash('success','The Blog Post was Successfully Save!');
-        //redirect to another page
-                        //route
-        return redirect()->web('posts.show', $post->id);
-        //return redirect('/posts',$post->id);
     }
 
    /**
@@ -64,7 +70,8 @@ class PostController extends Controller
     public function show($id)
     {
         //
-        return view ('posts.show');
+        $post = Post::find($id); //BASIC ELOQUENT *5 
+        return view ('posts.show')->withPost($post); 
     }
 
     /**
@@ -75,7 +82,10 @@ class PostController extends Controller
      */
     public function edit($id)
     {
-        //
+        //find the post in the database and save as a va
+        $post = Post::find($id);
+        //return the view and pass in the var previously created
+        return view('posts.edit')->withPost($post);
     }
 
     /**
@@ -87,7 +97,23 @@ class PostController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        //Validate the data
+        $this->validate($request, array(
+            'title' => 'required|max:255',
+            'body'  => 'required'
+        ));
+
+
+        // save the data to te database
+        $post = Post::find($id);
+        $post->title = $request->title;
+        $post->body = $request->body;
+        $post->save(); 
+        
+        // set flash data with success message
+        Session::flash('Success','The Blog Post was Successfully Update!');
+        // redirect with flash data to posts.show
+        return redirect()->route('posts.show', $post->id);
     }
 
     /**
@@ -99,5 +125,11 @@ class PostController extends Controller
     public function destroy($id)
     {
         //
+        $post = Post::find($id);
+
+        $post->delete();
+
+        Session::flash('Success','The Blog Post was Successfully Delete!');
+        return redirect()->route('posts.index');
     }
 }

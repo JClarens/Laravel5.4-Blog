@@ -2,11 +2,29 @@
 <html lang="en">
   <head>
     @include('partials._head')
-  <head>
+  <head>  
   <body>
       @include('partials._nav')
-    <div class="container">
-        <!--<div class="row">
+    <div class="container"> 
+      @yield('content')
+      @include('partials._messages')
+      @include('partials._footer')
+    </div><!--end of container-->      
+  </body>
+@include('partials._javascript')
+</html>
+
+
+
+
+
+
+
+
+
+
+
+<!--<div class="row">
             <div class="col-md-12"> 
                 <div class="jumbotron">
                     <h1>Welcome to My Blog!</h1>
@@ -46,10 +64,3 @@
           <h2>sidebar</h2>          
           </div>
       </div>     -->
-      @yield('content')
-      @include('partials._messages')
-      @include('partials._footer')
-    </div><!--end of container-->      
-  </body>
-@include('partials._javascript')
-</html>
