@@ -42,6 +42,9 @@
 
                 </tbody>
             </table>
+            <div class="text-center">   
+            {!! $postszzz->links(); !!}
+            </div>
         </div>
     </div>
 @stop

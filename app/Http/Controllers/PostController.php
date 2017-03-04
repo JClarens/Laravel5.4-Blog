@@ -15,8 +15,8 @@ class PostController extends Controller
     public function index()
     {
         //create a variable and store all the blog posts int it from the database
-        $postsIndex= Post::all();
-
+        //$postsIndex= Post::all(); paginate untuk batasi yg muncuk itu 10 per halaman. id desc untuk mengurutkan berdasarkan post terbaru
+        $postsIndex= Post::orderBy('id','desc')->paginate(10);
         //return a view and pass int the above  variable 
         return view('posts.index')->withPostszzz($postsIndex);
     }
